@@ -1,11 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import { VictoryChart, VictoryTheme, VictoryLine } from "victory-native";
 
-export default function App() {
+const App = () => {
+  const [time, setTime] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(prevCounter => prevCounter + 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  });
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text>Time: {time}</Text>
+      <VictoryChart
+        theme={VictoryTheme.material}
+      >
+        <VictoryLine
+          style={{
+            data: { stroke: "#c43a31" },
+            parent: { border: "1px solid #ccc"}
+          }}
+          data={[1, 2, 3, 4, 5, 2, 6]}
+        />
+      </VictoryChart>
     </View>
   );
 }
@@ -13,8 +31,10 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f5fcff"
+  }
 });
+
+export default App;
