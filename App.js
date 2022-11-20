@@ -5,29 +5,9 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Alert,
-  FlatList
+  FlatList,
 } from 'react-native';
 import { VictoryChart, VictoryTheme, VictoryLine } from "victory-native";
-
-// const App = () => {
-//   return (
-//     <View style={styles.container}>
-//       <Text>Time: {time}</Text>
-//       <VictoryChart
-//         theme={VictoryTheme.material}
-//       >
-//         <VictoryLine
-//           style={{
-//             data: { stroke: "#c43a31" },
-//             parent: { border: "1px solid #ccc"}
-//           }}
-//           data={[1, 2, 3, 4, 5, 2, 6]}
-//         />
-//       </VictoryChart>
-//     </View>
-//   );
-// };
 
 const App = () => {
   const [time, setTime] = useState(0);
@@ -39,18 +19,44 @@ const App = () => {
     return () => clearInterval(interval);
   });
   const patients = [
-    {id:1, color:"#FF4500", icon:"https://bootdey.com/img/Content/avatar/avatar1.png", name: "User 1"},
-    {id:2, color:"#87CEEB", icon:"https://bootdey.com/img/Content/avatar/avatar2.png", name: "User 2"}, 
-    {id:3, color:"#4682B4", icon:"https://bootdey.com/img/Content/avatar/avatar3.png", name: "User 3"}, 
-    {id:4, color:"#6A5ACD", icon:"https://bootdey.com/img/Content/avatar/avatar4.png", name: "User 4"}, 
-    {id:5, color:"#FF69B4", icon:"https://bootdey.com/img/Content/avatar/avatar5.png", name: "User 5"}, 
-    {id:6, color:"#00BFFF", icon:"https://bootdey.com/img/Content/avatar/avatar6.png", name: "User 6"}, 
-    {id:7, color:"#00FFFF", icon:"https://bootdey.com/img/Content/avatar/avatar1.png", name: "User 7"}, 
-    {id:8, color:"#20B2AA", icon:"https://bootdey.com/img/Content/avatar/avatar2.png", name: "User 8"},
-    {id:9, color:"#191970", icon:"https://bootdey.com/img/Content/avatar/avatar3.png", name: "User 9"},
+    {id:1, color:"#FF4500", icon:"https://bootdey.com/img/Content/avatar/avatar1.png", name: "King Robertson"},
+    {id:2, color:"#87CEEB", icon:"https://bootdey.com/img/Content/avatar/avatar2.png", name: "Buster Owen"}, 
+    {id:3, color:"#4682B4", icon:"https://bootdey.com/img/Content/avatar/avatar3.png", name: "Rena Wiley"}, 
+    {id:4, color:"#6A5ACD", icon:"https://bootdey.com/img/Content/avatar/avatar4.png", name: "Jerrell Leach"}, 
+    {id:5, color:"#FF69B4", icon:"https://bootdey.com/img/Content/avatar/avatar5.png", name: "Harris Whitney"}, 
+    {id:6, color:"#00BFFF", icon:"https://bootdey.com/img/Content/avatar/avatar6.png", name: "Anton Watts"}, 
+    {id:7, color:"#00FFFF", icon:"https://bootdey.com/img/Content/avatar/avatar1.png", name: "Elliot Mccall"}, 
+    {id:8, color:"#20B2AA", icon:"https://bootdey.com/img/Content/avatar/avatar2.png", name: "Markus Zhang"},
+    {id:9, color:"#191970", icon:"https://bootdey.com/img/Content/avatar/avatar3.png", name: "Edith Maxwell"},
   ];
-  return currUser != 0 ? (
-    <View></View>
+  // const data = Array.from({length: 40}, () => Math.floor(Math.random() * 40));
+  const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  return currUser >= 0 ? (
+    <View style={styles.userContainer}>
+      <View style={styles.topBar}>
+        <TouchableOpacity onPress={() => setCurrUser(-1)}>
+          <Image style={styles.backButton} source={require('./assets/back.png')}/>
+        </TouchableOpacity>
+        <Text style={styles.name}>{patients[currUser].name}</Text>
+      </View>
+      <View style={styles.graphContainer}>
+        <VictoryChart
+          theme={VictoryTheme.material}
+        >
+          <VictoryLine
+            style={{
+              data: { stroke: "#c43a31" },
+              parent: { border: "1px solid #ccc"}
+            }}
+            data={data}
+          />
+        </VictoryChart>
+      </View>
+      <View style={styles.graphContainer}>
+      </View>
+      <View style={styles.graphContainer}>
+      </View>
+    </View>
   ) : (
     <View style={styles.container}>
       <FlatList 
@@ -59,7 +65,7 @@ const App = () => {
         keyExtractor= {item => item.id}
         renderItem={({item}) => {
           return (
-            <TouchableOpacity style={[styles.card, {borderColor:item.color}]} onPress={(item) => setCurrUser(item.id)}>
+            <TouchableOpacity style={[styles.card, {borderColor:item.color}]} onPress={() => setCurrUser(item.id-1)}>
               <View style={styles.cardContent}>
                 <Image style={[styles.image, styles.imageContent]} source={{uri: item.icon}}/>
                 <Text style={styles.name}>{item.name}</Text>
@@ -181,7 +187,26 @@ const styles = StyleSheet.create({
     borderRadius:40,
     borderWidth:5,
     borderColor:"green",
-  }
+  },
+  userContainer: {
+    flex: 1,
+    backgroundColor: '#EBEBEB',
+  },
+  topBar: {
+    flexDirection: 'row',
+    padding: 10,
+    paddingTop: 30,
+    flex: 1,
+    borderWidth: 5,
+  },
+  graphContainer: {
+    flex: 5,
+    borderWidth: 5,
+  },
+  backButton: {
+    width: 50,
+    height: 50,
+  },
 });
 
 export default App;
