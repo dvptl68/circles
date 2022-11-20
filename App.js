@@ -6,19 +6,11 @@ import {
   TouchableOpacity,
   Image,
   Alert,
-  TextInput,
   FlatList
 } from 'react-native';
 import { VictoryChart, VictoryTheme, VictoryLine } from "victory-native";
 
 // const App = () => {
-//   const [time, setTime] = useState(0);
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setTime(prevCounter => prevCounter + 1);
-//     }, 1000);
-//     return () => clearInterval(interval);
-//   });
 //   return (
 //     <View style={styles.container}>
 //       <Text>Time: {time}</Text>
@@ -37,81 +29,58 @@ import { VictoryChart, VictoryTheme, VictoryLine } from "victory-native";
 //   );
 // };
 
-
-export default class Users extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [
-        {id:1, color:"#FF4500", icon:"https://bootdey.com/img/Content/avatar/avatar1.png", name: "User 1", tags:['tag 1', 'tag 2', 'tag 3', 'Mobile dev', 'RN', 'Bootdey']},
-        {id:2, color:"#87CEEB", icon:"https://bootdey.com/img/Content/avatar/avatar2.png", name: "User 2", tags:['tag 1', 'tag 2', 'tag 3', 'Dey-Dey', 'Developer']}, 
-        {id:3, color:"#4682B4", icon:"https://bootdey.com/img/Content/avatar/avatar3.png", name: "User 3", tags:['tag 1', 'tag 2', 'tag 3']}, 
-        {id:4, color:"#6A5ACD", icon:"https://bootdey.com/img/Content/avatar/avatar4.png", name: "User 4", tags:['tag 1', 'tag 2', 'tag 3']}, 
-        {id:5, color:"#FF69B4", icon:"https://bootdey.com/img/Content/avatar/avatar5.png", name: "User 5", tags:['tag 1', 'tag 2', 'tag 3']}, 
-        {id:6, color:"#00BFFF", icon:"https://bootdey.com/img/Content/avatar/avatar6.png", name: "User 6", tags:['tag 1', 'tag 2', 'tag 3']}, 
-        {id:7, color:"#00FFFF", icon:"https://bootdey.com/img/Content/avatar/avatar1.png", name: "User 7", tags:['tag 1', 'tag 2', 'tag 3']}, 
-        {id:8, color:"#20B2AA", icon:"https://bootdey.com/img/Content/avatar/avatar2.png", name: "User 8", tags:['tag 1', 'tag 2', 'tag 3']},
-        {id:9, color:"#191970", icon:"https://bootdey.com/img/Content/avatar/avatar3.png", name: "User 9", tags:['tag 1', 'tag 2', 'tag 3']},
-      ],
-    };
-  }
-
-  cardClickEventListener = (item) => {
-    Alert.alert(item.name);
-  }
-
-  tagClickEventListener = (tagName) => {
-    Alert.alert(tagName);
-  }
-
-  renderTags = (item) =>{
-    return item.tags.map((tag, key) => {
-      return (
-        <TouchableOpacity key={key} style={styles.btnColor} onPress={() => {this.tagClickEventListener(tag)}}>
-          <Text>{tag}</Text>
-        </TouchableOpacity> 
-      );
-    })
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.formContent}>
-          <View style={styles.inputContainer}>
-            <Image style={[styles.icon, styles.inputIcon]} source={{uri: 'https://png.icons8.com/search/androidL/100/000000'}}/>
-            <TextInput style={styles.inputs}
-              ref={'txtSearch'}
-              placeholder="Search"
-              underlineColorAndroid='transparent'
-              onChangeText={(name_address) => this.setState({name_address})}/>
-          </View>
-        </View>
-
-        <FlatList 
-          style={styles.notificationList}
-          data={this.state.data}
-          keyExtractor= {(item) => {
-            return item.id;
-          }}
-          renderItem={({item}) => {
-            return (
-              <TouchableOpacity style={[styles.card, {borderColor:item.color}]} onPress={() => {this.cardClickEventListener(item)}}>
-                <View style={styles.cardContent}>
-                  <Image style={[styles.image, styles.imageContent]} source={{uri: item.icon}}/>
-                  <Text style={styles.name}>{item.name}</Text>
+const App = () => {
+  const [time, setTime] = useState(0);
+  const [currUser, setCurrUser] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(prevCounter => prevCounter + 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  });
+  const patients = [
+    {id:1, color:"#FF4500", icon:"https://bootdey.com/img/Content/avatar/avatar1.png", name: "User 1"},
+    {id:2, color:"#87CEEB", icon:"https://bootdey.com/img/Content/avatar/avatar2.png", name: "User 2"}, 
+    {id:3, color:"#4682B4", icon:"https://bootdey.com/img/Content/avatar/avatar3.png", name: "User 3"}, 
+    {id:4, color:"#6A5ACD", icon:"https://bootdey.com/img/Content/avatar/avatar4.png", name: "User 4"}, 
+    {id:5, color:"#FF69B4", icon:"https://bootdey.com/img/Content/avatar/avatar5.png", name: "User 5"}, 
+    {id:6, color:"#00BFFF", icon:"https://bootdey.com/img/Content/avatar/avatar6.png", name: "User 6"}, 
+    {id:7, color:"#00FFFF", icon:"https://bootdey.com/img/Content/avatar/avatar1.png", name: "User 7"}, 
+    {id:8, color:"#20B2AA", icon:"https://bootdey.com/img/Content/avatar/avatar2.png", name: "User 8"},
+    {id:9, color:"#191970", icon:"https://bootdey.com/img/Content/avatar/avatar3.png", name: "User 9"},
+  ];
+  return currUser != 0 ? (
+    <View></View>
+  ) : (
+    <View style={styles.container}>
+      <FlatList 
+        style={styles.notificationList}
+        data={patients}
+        keyExtractor= {item => item.id}
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity style={[styles.card, {borderColor:item.color}]} onPress={(item) => setCurrUser(item.id)}>
+              <View style={styles.cardContent}>
+                <Image style={[styles.image, styles.imageContent]} source={{uri: item.icon}}/>
+                <Text style={styles.name}>{item.name}</Text>
+              </View>
+              <View style={[styles.iconContent, styles.tagsContent]}>
+                <View style={styles.normalIcon}>
+                  <Image style={styles.healthIcon} source={require('./assets/movement.png')}/>
                 </View>
-                <View style={[styles.cardContent, styles.tagsContent]}>
-                  {this.renderTags(item)}
+                <View style={styles.normalIcon}>
+                  <Image style={styles.healthIcon} source={require('./assets/temperature.png')}/>
                 </View>
-              </TouchableOpacity>
-            )
-          }}/>
-      </View>
-    );
-  }
-}
+                <View style={styles.normalIcon}>
+                  <Image style={styles.healthIcon} source={require('./assets/pressure.png')}/>
+                </View>
+              </View>
+            </TouchableOpacity>
+          )
+        }}/>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -165,10 +134,17 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     borderTopWidth:40,
     marginBottom:20,
+    width: 350,
   },
   cardContent:{
     flexDirection:'row',
-    marginLeft:10, 
+    marginLeft:10,
+  },
+  iconContent:{
+    flexDirection:'row',
+    marginLeft:10,
+    alignContent:'center',
+    justifyContent:'center',
   },
   imageContent:{
     marginTop:-40,
@@ -195,4 +171,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
     marginTop:5,
   },
+  healthIcon: {
+    width:40,
+    height:40,
+  },
+  normalIcon: {
+    padding: 5,
+    margin: 5,
+    borderRadius:40,
+    borderWidth:5,
+    borderColor:"green",
+  }
 });
+
+export default App;
